@@ -82,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         mOrigin.setText(mSandwich.getPlaceOfOrigin());
         mDescription.setText(mSandwich.getDescription());
         for (String s : mSandwich.getIngredients()){
-            mIngredients.append(s);
+            mIngredients.append(s + '\n');
         }
         for (String s : mSandwich.getAlsoKnownAs()){
             mAka.append(s);
