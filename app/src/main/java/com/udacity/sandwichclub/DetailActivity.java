@@ -63,16 +63,15 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
+        // Get references to TextViews
         TextView mOrigin = findViewById(R.id.origin_tv);
         TextView mDescription = findViewById(R.id.description_tv);
         TextView mIngredients = findViewById(R.id.ingredients_tv);
-        TextView mAka = findViewById(R.id.also_known_tv);
+        TextView mAlsoKnownAs = findViewById(R.id.also_known_tv);
+
         mOrigin.setText(mSandwich.getPlaceOfOrigin());
         mDescription.setText(mSandwich.getDescription());
-        for (String s : mSandwich.getIngredients()){
-            mIngredients.append(s + '\n');
-        }
-        String joined = TextUtils.join(", ", mSandwich.getAlsoKnownAs());
-        mAka.append(joined);
+        mIngredients.setText(TextUtils.join("\n", mSandwich.getIngredients()));
+        mAlsoKnownAs.setText(TextUtils.join("\n", mSandwich.getAlsoKnownAs()));
     }
 }

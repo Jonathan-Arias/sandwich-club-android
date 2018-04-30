@@ -13,36 +13,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonUtils {
+    private static String fallback = "Unknown";
+    private static String noData = "No data available";
 
     public static Sandwich parseSandwichJson(String json) {
         try {
-            String fallback = "Unknown";
             JSONObject sandwichDetails = new JSONObject(json);
+
             JSONObject name = sandwichDetails.getJSONObject("name");
+
             String mainName = name.getString("mainName");
-            JSONArray alsoKnownAs = name.getJSONArray("alsoKnownAs");
+            JSONArray alsoKnownAsList = name.getJSONArray("alsoKnownAs");
+
             String placeOfOrigin = sandwichDetails.getString("placeOfOrigin");
+            if (placeOfOrigin != null && placeOfOrigin.isEmpty()){
+                placeOfOrigin = fallback;
+            }
+
             String description = sandwichDetails.getString("description");
             String image = sandwichDetails.getString("image");
-            JSONArray ingredients = sandwichDetails.getJSONArray("ingredients");
+            JSONArray ingredientsList = sandwichDetails.getJSONArray("ingredients");
 
-            List<String> alsoKnownAsList = new ArrayList<>();
-            for (int i = 0; i < alsoKnownAs.length(); i++){
-                alsoKnownAsList.add(alsoKnownAs.getString(i));
-            }
+            List<String> alsoKnownAs = new ArrayList<>();
+            addItemsToList(alsoKnownAsList, alsoKnownAs);
 
-            List<String> ingredientList = new ArrayList<>();
-            for (int i = 0; i < ingredients.length(); i++){
-                ingredientList.add(ingredients.getString(i));
-            }
+            List<String> ingredients = new ArrayList<>();
+            addItemsToList(ingredientsList, ingredients);
 
-            Sandwich sandwich = new Sandwich(mainName, alsoKnownAsList, placeOfOrigin, description, image, ingredientList);
-            return sandwich;
+            return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
 
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
 
         return null;
+    }
+
+    private static void addItemsToList(JSONArray items, List<String> list){
+        if (items.length() == 0){
+            list.add(noData);
+        } else {
+            try {
+                for (int i = 0; i < items.length(); i++){
+                    list.add("\u2022 " + items.getString(i));
+                }
+            } catch (JSONException ex){
+                ex.printStackTrace();
+            }
+        }
     }
 }
