@@ -55,7 +55,7 @@ public class JsonUtils {
         } else {
             try {
                 for (int i = 0; i < items.length(); i++){
-                    list.add("\u2022 " + items.getString(i));
+                    list.add(items.getString(i));
                 }
             } catch (JSONException ex){
                 ex.printStackTrace();
