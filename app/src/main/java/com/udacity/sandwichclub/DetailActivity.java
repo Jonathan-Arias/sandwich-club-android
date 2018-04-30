@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,21 +41,8 @@ public class DetailActivity extends AppCompatActivity {
 
         String[] sandwiches = getResources().getStringArray(R.array.sandwich_details);
         String json = sandwiches[position];
-        // Sandwich sandwich = JsonUtils.parseSandwichJson(json);
-        String name = "Club sandwich";
-        ArrayList<String> aka = new ArrayList<String>();
-        aka.add("Clubhouse sandwich");
-        String origin = "United States";
-        String description = "A club sandwich, also called a clubhouse sandwich, is a sandwich of bread (occasionally toasted), sliced cooked poultry, fried bacon, lettuce, tomato, and mayonnaise. It is often cut into quarters or halves and held together by cocktail sticks. Modern versions frequently have two layers which are separated by an additional slice of bread.";
-        String image = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Club_sandwich.png/800px-Club_sandwich.png";
-        ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Toasted bread");
-        ingredients.add("Turkey or chicken");
-        ingredients.add("Bacon");
-        ingredients.add("Lettuce");
-        ingredients.add("Tomato");
-        ingredients.add("Mayonnaise");
-        mSandwich = new Sandwich(name, aka, origin, description, image, ingredients);
+        mSandwich = JsonUtils.parseSandwichJson(json);
+
         if (mSandwich == null) {
             // Sandwich data unavailable
             closeOnError();
@@ -84,8 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         for (String s : mSandwich.getIngredients()){
             mIngredients.append(s + '\n');
         }
-        for (String s : mSandwich.getAlsoKnownAs()){
-            mAka.append(s);
-        }
+        String joined = TextUtils.join(", ", mSandwich.getAlsoKnownAs());
+        mAka.append(joined);
     }
 }
